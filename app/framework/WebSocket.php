@@ -2,9 +2,9 @@
 
 namespace App\framework;
 
-
 use App\framework\extend\Redis;
 use LiPhp\LiComm;
+use App\structure\TaskData;
 
 class WebSocket extends AppBase
 {
@@ -25,7 +25,7 @@ class WebSocket extends AppBase
         if(!is_null($server)){
             $this->server = $server;
         }
-        $this->response_handle = new Response(['return_data'=>true]);
+        $this->response_handle = new Response(['return_data'=>true, 'json_encode_flags'=>JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
     }
 
     /**
@@ -151,6 +151,7 @@ class WebSocket extends AppBase
                 return $api;
 
             }else{
+                swoole_error_log(5, "WebSocket Controller not found! {$newClass} {$func}");
                 $this->error(404,'接口不存在！');
             }
 
@@ -161,10 +162,16 @@ class WebSocket extends AppBase
             }else{
                 $data = ['code'=>$e->getCode(),'message'=>$e->getMessage()];
             }
+            swoole_error_log(5, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $this->error(417, $emsg, $data);
         }
+        return $this;
+    }
 
-        return $api;
+    public function task(string $uri, mixed $data, int $fd = 0)
+    {
+        $data = new TaskData($uri, $data, $fd);
+        return $this->server->task($data);
     }
 
     public function __call($name, $arguments) {

@@ -1,9 +1,10 @@
 liteSwoole 2.0
 ===============
 
-[![Total Downloads](https://poser.pugx.org/unntech/liteswoole/downloads)](https://packagist.org/packages/unntech/liteswoole)
 [![Latest Stable Version](https://poser.pugx.org/unntech/liteswoole/v/stable)](https://packagist.org/packages/unntech/liteswoole)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.0-8892BF.svg)](http://www.php.net/)
+[![Total Downloads](https://poser.pugx.org/unntech/liteswoole/downloads)](https://packagist.org/packages/unntech/liteswoole)
+[![Latest Unstable Version](http://poser.pugx.org/unntech/liteswoole/v/unstable)](https://packagist.org/packages/unntech/liteswoole)
+[![PHP Version Require](http://poser.pugx.org/unntech/liteswoole/require/php)](https://packagist.org/packages/unntech/liteswoole)
 [![License](https://poser.pugx.org/unntech/liteswoole/license)](https://packagist.org/packages/unntech/liteswoole)
 
 基于PHP Swoole 创建的协程框架，可用于生产环境的高性能API接口 和 WebSocket 连接。
@@ -90,6 +91,7 @@ yourApp/
 │   │   ├── Response.php                    #API 标准输出类
 │   │   └── WebSocket.php                   #WebSocket请求基础类
 │   ├── model                               #模型类
+│   ├── structure                           #自定义的数据结构体
 │   ├── traits
 │   ├── ...                                 #其它子模块
 ├── config                                  #配置文件
@@ -111,7 +113,7 @@ yourApp/
 
 ## 命名规范
 
-`LiteSwoole`遵循PSR-2命名规范和PSR-4自动加载规范。
+`LiteSwoole`遵循PSR命名规范和PSR-4自动加载规范。
 
 ## 参与开发
 

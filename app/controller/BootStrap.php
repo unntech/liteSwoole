@@ -3,6 +3,9 @@
 namespace App\controller;
 
 use App\framework\AppBase;
+use App\framework\TaskProcess;
+use App\structure\TaskData;
+use App\framework\LiApp;
 
 class BootStrap extends AppBase
 {
@@ -22,7 +25,6 @@ class BootStrap extends AppBase
     public function onWorkerStart(\Swoole\Server $server, int $workerId)
     {
         //echo 'Server is Reload...';
-
     }
 
     /**
@@ -39,7 +41,7 @@ class BootStrap extends AppBase
         /* ----  定时任务示例
         $timerId = \Swoole\Timer::tick(5000, function () use ($server){
             $quoteTaskNum = LiApp::$commTable->incr('quoteTaskNum', 'num');
-            $task_id = $server->task( ['action'=>'Job10Sec'] );
+            $task_id = $server->task( new TaskData('/index/test', ['text'=>'StartOnce']) );
         });
         // ------- */
     }
@@ -61,21 +63,21 @@ class BootStrap extends AppBase
      * @param int $task_id
      * @param int $src_worker_id
      * @param mixed $data
-     * @return mixed
+     * @return mixed|void
      */
     public function onTask($server, int $task_id, int $src_worker_id, mixed $data)
     {
         //$quoteTaskNum = LiApp::$commTable->decr('quoteTaskNum', 'num');
-        //echo $task_id.': '.json_encode($data).$quoteTaskNum.PHP_EOL;
+        //echo $task_id.': '.json_encode($data).PHP_EOL;
 
-        $action = $data['action'] ?? 'NONE';
-        // 根据不同的指令 处理不同的任务
-//        switch ($action){
-//
-//            default:
-//        }
-
-        return [$task_id, $data];  //把数据返回给 TaskFinish 处理
+        $task = (new TaskProcess($server))->run($data, $task_id, $src_worker_id);
+        //echo json_encode($task->errors());
+        $taskData = $task->taskData();
+        if($taskData->status == 9){
+            return ;
+        }else{
+            return $taskData;
+        }
     }
 
     /**
@@ -88,6 +90,8 @@ class BootStrap extends AppBase
     public function onTaskFinish($server, int $task_id, mixed $data)
     {
         //echo 'Finished: '.json_encode($data).PHP_EOL;
+
+        $task = (new TaskProcess($server))->finish($data, $task_id);
 
     }
 }

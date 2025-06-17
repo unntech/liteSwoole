@@ -22,6 +22,7 @@ class index extends HttpRequest
         $this->headers(['user-agent'=>$this->request->header['user-agent']]);
         $this->response_options(['signType'=>'MD5']);
 
+        //$this->task('/index/test', $data);
         $this->success($data,0, "调用方法: index 成功");
     }
 

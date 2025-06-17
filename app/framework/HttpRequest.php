@@ -4,10 +4,12 @@ namespace App\framework;
 
 use App\framework\extend\Redis;
 use LiPhp\LiComm;
+use App\structure\TaskData;
 
 class HttpRequest extends AppBase
 {
     protected ?\Swoole\Http\Request $request;
+    protected $server;
     protected string $request_method = '';
     protected int $fd;
     protected array $postData = [];
@@ -17,13 +19,16 @@ class HttpRequest extends AppBase
 
     use \App\traits\crypt;
 
-    public function __construct(?\Swoole\Http\Request $request=null)
+    public function __construct(?\Swoole\Http\Request $request=null, $server = null)
     {
         parent::__construct();
         if(!is_null($request)){
             $this->request = $request;
         }
-        $this->response_handle = new Response(['return_data'=>true]);
+        if(!is_null($server)){
+            $this->server = $server;
+        }
+        $this->response_handle = new Response(['return_data'=>true, 'json_encode_flags'=>JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
         $this->DT_TIME = time();
 
     }
@@ -168,6 +173,7 @@ class HttpRequest extends AppBase
             if(file_exists($filename)){
 
                 $api = new $newClass();
+                $api->server = $this->server;
                 $api->init_request_data($this->request);
                 if($api->exitFlag) return $api;
                 if($action != 'index' && $func != 'authorize'){
@@ -179,6 +185,7 @@ class HttpRequest extends AppBase
                 return $api;
 
             }else{
+                swoole_error_log(5, "Http controller not found! {$newClass} {$func}");
                 $this->error(404,'接口不存在！');
             }
 
@@ -189,10 +196,16 @@ class HttpRequest extends AppBase
             }else{
                 $data = ['code'=>$e->getCode(),'message'=>$e->getMessage()];
             }
+            swoole_error_log(5, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
             $this->error(417, $emsg, $data);
         }
 
-        return $api;
+    }
+
+    public function task(string $uri, mixed $data)
+    {
+        $data = new TaskData($uri, $data);
+        return $this->server->task($data);
     }
 
     public function __call($name, $arguments) {

@@ -17,7 +17,7 @@ class index extends WebSocket
             'title'=>'This is a testing.',
             'data' => $this->data,
         ];
-
+        //$this->task('/index/index', $data, $this->fd);
         $this->success($data,0, "调用方法: index 成功");
     }
 

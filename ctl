@@ -25,6 +25,13 @@ function wait_stop_service() {
 
 case $1 in
     start)
+        # 检查进程是否正在运行
+        if [ -n "$CTL_PID" ]; then
+            if ps -p "$CTL_PID" > /dev/null 2>&1; then
+                echo "$SERVICE_NAME is running."
+                exit 0
+            fi
+        fi
         echo "Starting $SERVICE_NAME service..."
         # 启动服务的命令
         php app.php

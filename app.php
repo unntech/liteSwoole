@@ -24,7 +24,13 @@ class LiteSwoole
 
     public function __construct($param = [])
     {
-        $this->port = $param['port'] ?? 9899;
+        if (!empty($param)) {
+            $this->port = $param['port'] ?? $this->port;
+            $this->host = $param['host'] ?? $this->host;
+            $this->taskName = $param['taskName'] ?? $this->taskName;
+            $options = $param['options'];
+            $this->options = array_merge($this->options, $options);
+        }
         $sock_type = SWOOLE_SOCK_TCP;
         if(isset($param['IPV6']) && $param['IPV6']=== true){
             $sock_type = $sock_type | SWOOLE_SOCK_TCP6;
@@ -40,11 +46,6 @@ class LiteSwoole
             $this->service = new Swoole\Http\Server($this->host, $this->port, SWOOLE_PROCESS, $sock_type );
         }
 
-        if (!empty($param)) {
-            $this->taskName = $param['taskName'];
-            $options = $param['options'];
-            $this->options = array_merge($this->options, $options);
-        }
         $this->service -> set($this->options);
 
         LiApp::$commTable = new Swoole\Table(1024);
@@ -90,6 +91,11 @@ class LiteSwoole
         });
     }
 
+    public function service()
+    {
+        return $this->service;
+    }
+
     public function onRequest(Swoole\Http\Request $request, Swoole\Http\Response $response): void
     {
         if ($request->server['path_info'] == '/favicon.ico' || $request->server['request_uri'] == '/favicon.ico') {
@@ -100,7 +106,7 @@ class LiteSwoole
         }
 
         LiApp::worker_begin();
-        $http = (new HttpRequest($request))->run();
+        $http = (new HttpRequest($request, $this->service))->run();
 
         LiApp::worker_end();
         $res = $http ? json_encode($http->response_data(), JSON_UNESCAPED_SLASHES) : '{"head":{"errcode":500,"msg":"Request Throwable!","unique_id":"aFA7K2tt4FH7r5sB-xmS3QAAAIg","timestamp":1750088491},"body":{"data":""},"signType":"NONE","encrypted":false,"bodyEncrypted":""}';
@@ -113,9 +119,9 @@ class LiteSwoole
     {
         LiApp::worker_begin();
         $boot = new BootStrap();
-        $ret = $boot->onTask($server, $task_id, $src_worker_id, $data);
+        $taskData = $boot->onTask($server, $task_id, $src_worker_id, $data);
         LiApp::worker_end();
-        return $ret;
+        return $taskData;
     }
 
     public function onTaskFinish($server, int $task_id, mixed $data)
@@ -144,7 +150,7 @@ class LiteSwoole
         //}
         if(!$frame->finish){ return; }  //数据包未接收完整，不处理
         if($frame->opcode == WEBSOCKET_OPCODE_TEXT){
-            if(in_array($frame->data, [null, '', '{}', '[]'])){
+            if(in_array($frame->data, [null, '', ' ', '{}', '[]'])){
                 $server->push($frame->fd, $frame->data);
                 return;
             }

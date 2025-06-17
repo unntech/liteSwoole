@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.1",
         "unntech/liphp": "*",
-        "unntech/encrypt": ">=1.0.4"
+        "unntech/encrypt": ">=1.0.5"
     },
     "autoload": {
         "psr-4": {

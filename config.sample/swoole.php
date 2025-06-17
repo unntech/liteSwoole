@@ -5,6 +5,7 @@ defined('IN_LitePhp') or exit('Access Denied');
 return [
     'taskName' => 'LiteSwoole',
     'port'     => 9898,
+    'host'     => '0.0.0.0',  //ipv6 用 '::'
     'SSL'      => false,
     'IPV6'     => false,
     'options'  => [
