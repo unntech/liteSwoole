@@ -2,7 +2,7 @@
 
 namespace App\framework\extend;
 
-class SqlSrv extends \LiPhp\sqlsrv
+class SqlSrv extends \LiPhp\SqlSrv
 {
 
 }

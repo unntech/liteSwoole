@@ -2,7 +2,7 @@
 
 namespace App\framework\extend;
 
-class MySQLi extends \LiPhp\mysqli
+class MySQLi extends \LiPhp\Mysqli
 {
 
 }
