@@ -28,7 +28,7 @@ class HttpRequest extends AppBase
         if(!is_null($server)){
             $this->server = $server;
         }
-        $this->response_handle = new Response(['return_data'=>true, 'json_encode_flags'=>JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
+        $this->response_handle = new Response(['return_data'=>true]);
         $this->DT_TIME = time();
 
     }

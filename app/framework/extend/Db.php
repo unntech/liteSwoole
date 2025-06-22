@@ -11,23 +11,17 @@ class Db extends \LiPhp\Db
      * 构造方法
      * @access public $i 为配置文件db列表里的第几个配置
      */
-    public static function Create($icfg, $i=0, $new = false)
+    public static function Create(array $config, int $i=0, bool $new = false)
     {
-        $cfg = $icfg['connections'][$i];
-        $dbt = $cfg['database'];
-        switch($dbt){
-            case 'mysqli':
-                $db = new MySQLi($cfg);
-                break;
-            case 'sqlsrv':
-                $db = new SqlSrv($cfg);
-                break;
-            case 'mongodb':
-                $db = new MongoDB($cfg);
-                break;
-            default :
-                $db = false;
-        }
+        $cfg = $config['connections'][$i];
+        $dbt = strtolower($cfg['database']);
+        $db = match ($dbt) {
+            'mysqli'    => new MySQLi($cfg),
+            'sqlsrv'    => new SqlSrv($cfg),
+            'mongodb'   => new MongoDB($cfg),
+            'pgsql'     => new PgSql($cfg),
+            default     => false,
+        };
         if(!$new) static::$db = $db;
         return $db;
     }

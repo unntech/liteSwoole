@@ -8,7 +8,7 @@ use App\framework\extend\Redis;
 
 class LiApp
 {
-    const VERSION = '2.0.2';
+    const VERSION = '2.0.3';
     /**
      * @var extend\MySQLi
      */
@@ -96,7 +96,7 @@ class LiApp
     public static function worker_end(int $db_i = 0): void
     {
         self::$db->close();
-        Redis::$redis->close();
+        Redis::close();
     }
 
 }

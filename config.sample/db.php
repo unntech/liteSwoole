@@ -44,5 +44,22 @@ return [
             // 数据库名
             'dbname'   => 'test'
         ],
+        [
+            'database'       => 'pgsql',
+            // 服务器地址
+            'hostname'       => '127.0.0.1',
+            // 数据库名
+            'dbname'         => 'db',
+            // 用户名
+            'username'       => 'user',
+            // 密码
+            'password'       => 'psw',
+            // 端口
+            'hostport'       => 5432,
+
+            'charset'        => '',
+
+            'default_schema' => 'public',
+        ],
     ]
 ];

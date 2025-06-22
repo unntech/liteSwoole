@@ -109,7 +109,7 @@ class LiteSwoole
         $http = (new HttpRequest($request, $this->service))->run();
 
         LiApp::worker_end();
-        $res = $http ? json_encode($http->response_data(), JSON_UNESCAPED_SLASHES) : '{"head":{"errcode":500,"msg":"Request Throwable!","unique_id":"aFA7K2tt4FH7r5sB-xmS3QAAAIg","timestamp":1750088491},"body":{"data":""},"signType":"NONE","encrypted":false,"bodyEncrypted":""}';
+        $res = $http ? json_encode($http->response_data(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : '{"head":{"errcode":500,"msg":"Request Throwable!","unique_id":"aFA7K2tt4FH7r5sB-xmS3QAAAIg","timestamp":1750088491},"body":{"data":""},"signType":"NONE","encrypted":false,"bodyEncrypted":""}';
         $response->header('Access-Control-Allow-Origin', '*');
         $response->header("Content-Type", "application/json; charset=utf-8");
         $response->end($res);

@@ -25,7 +25,7 @@ class WebSocket extends AppBase
         if(!is_null($server)){
             $this->server = $server;
         }
-        $this->response_handle = new Response(['return_data'=>true, 'json_encode_flags'=>JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE]);
+        $this->response_handle = new Response(['return_data'=>true]);
     }
 
     /**
@@ -85,14 +85,14 @@ class WebSocket extends AppBase
     public function success(array $data = [], int $errcode = 0, string $msg = 'success')
     {
         $response_data = $this->response_handle->success($data, $errcode, $msg);
-        $this->server->push($this->fd, json_encode($response_data, JSON_UNESCAPED_SLASHES));
+        $this->server->push($this->fd, json_encode($response_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     public function error(int $errcode = 0, string $msg = 'fail', array $data = ['void'=>null])
     {
         $this->exitFlag = true;
         $response_data = $this->response_handle->error($errcode, $msg, $data);
-        $this->server->push($this->fd, json_encode($response_data, JSON_UNESCAPED_SLASHES));
+        $this->server->push($this->fd, json_encode($response_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     public function exitFlag(bool $flag = true): void

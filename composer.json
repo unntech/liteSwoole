@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "unntech/liphp": "*",
+        "unntech/liphp": ">=2.0.3",
         "unntech/encrypt": ">=1.0.5"
     },
     "autoload": {
