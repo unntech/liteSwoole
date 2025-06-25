@@ -117,7 +117,8 @@ yourApp/
 
 ## 参与开发
 
-直接提交PR或者Issue即可
+直接提交PR或者Issue即可  
+> [版本更新记录 CHANGELOG](CHANGELOG.md)
 
 ## 版权信息
 

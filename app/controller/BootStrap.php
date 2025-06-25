@@ -12,7 +12,6 @@ class BootStrap extends AppBase
     public function __construct()
     {
         parent::__construct();
-        $this->DT_TIME = time();
 
     }
 

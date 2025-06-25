@@ -29,7 +29,6 @@ class HttpRequest extends AppBase
             $this->server = $server;
         }
         $this->response_handle = new Response(['return_data'=>true]);
-        $this->DT_TIME = time();
 
     }
 

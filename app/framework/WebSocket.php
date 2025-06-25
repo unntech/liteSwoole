@@ -21,7 +21,6 @@ class WebSocket extends AppBase
     public function __construct(\Swoole\WebSocket\Server | \Swoole\Server | null $server = null)
     {
         parent::__construct();
-        $this->DT_TIME = time();
         if(!is_null($server)){
             $this->server = $server;
         }

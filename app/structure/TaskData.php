@@ -31,7 +31,7 @@ class TaskData
      */
     public int $status = 0;
 
-    public function __construct(string $uri, mixed $data, int $fd = 0)
+    public function __construct(string $uri, mixed $data = [], int $fd = 0)
     {
         $this->uri = (str_starts_with($uri, '/') ? $uri : '/' . $uri);
         $this->data = $data;

@@ -5,10 +5,11 @@ namespace App\framework;
 use LiPhp\Config;
 use App\framework\extend\Db;
 use App\framework\extend\Redis;
+use LiPhp\Env;
 
 class LiApp
 {
-    const VERSION = '2.0.3';
+    const VERSION = '2.0.4';
     /**
      * @var extend\MySQLi
      */
@@ -28,7 +29,7 @@ class LiApp
     public static function initialize(): void
     {
         self::$DT_TIME = time();
-
+        Env::load(DT_ROOT.'/.env');
         Config::initialize(DT_ROOT . "/config/");
         Config::load(['app', 'db', 'redis', 'swoole']);
         self::$appName =Config::get('app.name', 'LiteSwoole');
@@ -89,6 +90,7 @@ class LiApp
     public static function worker_begin(int $db_i = 0): void
     {
         self::set_db($db_i);
+        self::$DT_TIME = time();
         \LiPhp\Model::setDb(self::$db);
         self::set_redis();
     }

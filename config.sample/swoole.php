@@ -16,7 +16,7 @@ return [
         'task_max_request'         => 10000,
         'ssl_cert_file'            => 'fullchain.pem',
         'ssl_key_file'             => 'privkey.pem',
-        //'open_http2_protocol' => true, // Enable HTTP2 protocol
+        //'open_http2_protocol'      => true, // Enable HTTP2 protocol
         'heartbeat_check_interval' => 65,
         'daemonize'                => true
     ],

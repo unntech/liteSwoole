@@ -10,7 +10,7 @@ abstract class AppBase
 
     public function __construct()
     {
-        $this->DT_TIME = LiApp::$DT_TIME;
+        $this->DT_TIME = time();
         $this->db = LiApp::$db;
         $this->domain = LiApp::$domain;
     }

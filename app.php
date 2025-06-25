@@ -53,7 +53,7 @@ class LiteSwoole
         LiApp::$commTable->create();
 
         foreach ($run_services as $s) {
-            $s = strtolower($s);
+            //$s = strtolower($s);
             if($s == 'http'){
                 $this->service->on("request",    [$this, 'onRequest']);
             }
