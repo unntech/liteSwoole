@@ -126,10 +126,12 @@ class LiteSwoole
 
     public function onTaskFinish($server, int $task_id, mixed $data)
     {
-        LiApp::worker_begin();
-        $boot = new BootStrap();
-        $boot->onTaskFinish($server, $task_id, $data);
-        LiApp::worker_end();
+        if (!empty($data)) {
+            LiApp::worker_begin();
+            $boot = new BootStrap();
+            $boot->onTaskFinish($server, $task_id, $data);
+            LiApp::worker_end();
+        }
     }
 
     public function onOpen(Swoole\WebSocket\Server $server, Swoole\Http\Request $request)
