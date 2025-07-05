@@ -42,7 +42,7 @@ class HttpRequest extends AppBase
             $log = [
                 'url'      => $this->request->server['request_uri'],
                 'params'   => json_encode($this->request->get, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-                'postData' => $this->request->getContent(),
+                'postdata' => $this->request->getContent(),
                 'ip'       => $this->request->server['remote_addr'],
                 'addtime'  => time(),
             ];

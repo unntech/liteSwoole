@@ -12,4 +12,4 @@ LiApp::initialize();
 
 require_once DT_ROOT . '/include/common.php';
 set_exception_handler('exception_handler');
-
+LiApp::Loader();

@@ -6,10 +6,11 @@ use LiPhp\Config;
 use App\framework\extend\Db;
 use App\framework\extend\Redis;
 use LiPhp\Env;
+use LiPhp\Model;
 
 class LiApp
 {
-    const VERSION = '2.0.4';
+    const VERSION = '2.0.5';
     /**
      * @var extend\MySQLi
      */
@@ -25,6 +26,15 @@ class LiApp
     public static int $DT_TIME;
     public static string $appName;
     public static string $domain;
+
+    /**
+     * 启动截入项
+     * @return void
+     */
+    public static function Loader(): void
+    {
+
+    }
 
     public static function initialize(): void
     {
@@ -91,11 +101,11 @@ class LiApp
     {
         self::set_db($db_i);
         self::$DT_TIME = time();
-        \LiPhp\Model::setDb(self::$db);
+        Model::setDb(self::$db);
         self::set_redis();
     }
 
-    public static function worker_end(int $db_i = 0): void
+    public static function worker_end(): void
     {
         self::$db->close();
         Redis::close();
